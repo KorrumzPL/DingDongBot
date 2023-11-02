@@ -28,16 +28,17 @@ export default {
     const memberChannel = interaction.member.voice.channel;
 
     if (!memberChannel) {
-      return await interaction.reply(
-        "You must be in a voice channel to use this command.",
+      return await interaction.editReply(
+        `Hey, ${interaction.user.tag}! You must be in a voice channel to use this command.`,
       );
     }
     const result = await TiktokDL(tiktok_url, {
       version: "v3",
     });
 
+    const response = await fetch(result.result.video2);
+
     if (result && result.result && result.result.video2) {
-      const response = await fetch(result.result.video2);
       if (!response) {
         return await interaction.editReply(
           `❌ | Something has gone terribly wrong! Probably you provided the wrong song URL! (url: ${tiktok_url})`,
@@ -67,14 +68,9 @@ export default {
             .setLabel("Play again")
             .setStyle(ButtonStyle.Success);
 
-          const downloadMP3 = new ButtonBuilder()
-            .setLabel("Download mp3")
-            .setURL(result.result.video2)
-            .setStyle(ButtonStyle.Link);
 
           const row = new ActionRowBuilder().addComponents(
             playAgain,
-            downloadMP3,
           );
 
           const endedPlaying = new EmbedBuilder()
@@ -82,10 +78,10 @@ export default {
             .setDescription(`🎶 | [sound](${tiktok_url})`)
             .setColor("Green");
 
-          if (customId.length > 100) return row.components[0].setDisabled(true);
           await interaction.editReply({
             embeds: [endedPlaying],
             components: [row],
+            files: [result.result.video2]
           });
         }
       });
@@ -102,7 +98,9 @@ export default {
       const addedToQueue = new EmbedBuilder()
         .setTitle(`✅ Sound playing!`)
         .setDescription(`🎶 | [sound](${tiktok_url})`)
-        .setColor("Blurple");
+        .setColor("Blurple")
+          .setFooter({ text: `To stop playing, kick me from voice channel. | Bot author: Korrumz2`})
+        .setTimestamp();
 
       await interaction.editReply({ embeds: [addedToQueue] });
     } else {

@@ -17,7 +17,7 @@ export default {
 
     if (!memberChannel) {
       return await interaction.reply(
-        "You must be in a voice channel to use this command.",
+          `Hey, ${interaction.user.tag}! You must be in a voice channel to use "Play again" button.`,
       );
     }
 
