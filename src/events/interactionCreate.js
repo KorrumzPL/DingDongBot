@@ -19,10 +19,10 @@ export default async function interactionCreate(client, interaction) {
     )}]`,
   );
 
-  if (interaction.isCommand())
-    return await onCommandInteraction(client, interaction);
+  if (interaction.isCommand() || interaction.isAutocomplete())
+      return await onCommandInteraction(client, interaction);
 
-  const embedNotFound = new EmbedBuilder()
+    const embedNotFound = new EmbedBuilder()
     .setTitle("Not found")
     .setDescription(
       "```❌ | This interaction was not found. Probably this function is refactored, or deleted. Please show this error on the support.```",

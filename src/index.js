@@ -22,7 +22,6 @@ const client = new Client({
 });
 
 client.interactions = new Collection();
-client.prisma = new PrismaClient();
 
 loadEvents(client).then(() =>
   console.log(
