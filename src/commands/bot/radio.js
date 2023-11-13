@@ -39,7 +39,7 @@ export default {
         )
     },
     async execute(client, interaction) {
-        const id = interaction.options.getString("city").split("-")[1];
+        const id = interaction.options.getString("radio").split("-")[1];
         console.log("id", id)
         const url = `https://radio.garden/api/ara/content/channel/${id}`;
 
