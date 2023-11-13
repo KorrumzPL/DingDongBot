@@ -15,7 +15,7 @@ export default {
         .setName("radio")
         .setDescription("Play radio on voice channel")
         .addStringOption((option) =>
-            option.setName("city").setDescription("City name").setRequired(true).setAutocomplete(true)
+            option.setName("radio").setDescription("Radio station/City name").setRequired(true).setAutocomplete(true)
         ),
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
@@ -31,7 +31,7 @@ export default {
 
         let data = []
         for (let i in json.hits.hits) {
-            data.push(`${json.hits.hits[i]._source.subtitle}: ${json.hits.hits[i]._source.title}-${json.hits.hits[i]._source.url.split("/")[3]}`)
+            data.push(`${json.hits.hits[i]._source.title}-${json.hits.hits[i]._source.url.split("/")[3]}`)
         }
 
         await interaction.respond(
@@ -58,8 +58,10 @@ export default {
             });
 
         const json = await fetchStation.json();
-        console.log(json)
+        console.log("Json", json)
 
+
+        if (json.error === "Not found") return interaction.reply("❌ | Station not found!");
 
         const resourceUrl = `https://radio.garden/api/ara/content/listen/${id}/channel.mp3`;
         const resource = createAudioResource(resourceUrl, {
@@ -78,8 +80,8 @@ export default {
         player.play(resource);
 
         const embed = new EmbedBuilder()
-            .setTitle(`➕ Trying to play radio "${json.data.title}"`)
-            .setColor("Blurple")
+            .setTitle(`✅ Playing radio "${json.data.title} 🎶"`)
+            .setColor("Green")
 
         await interaction.reply({ embeds: [embed] })
     },
