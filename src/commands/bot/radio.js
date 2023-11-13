@@ -81,6 +81,9 @@ export default {
 
         const embed = new EmbedBuilder()
             .setTitle(`✅ Playing radio "${json.data.title} 🎶"`)
+            .setDescription(`🌐 | **Country:** ${json.data.country.title} || 🗺️ | **Place:** ${json.data.place.title}`)
+            .setFooter({ text: `🖥️ | Radio website: ${json.data.website}`})
+            .setTimestamp()
             .setColor("Green")
 
         await interaction.reply({ embeds: [embed] })
